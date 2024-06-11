@@ -34,11 +34,11 @@ RUN service slapd start && \
     ldapadd -f /etc/openldap/setup/createOU.ldif -D cn=admin,dc=presto,dc=testldap,dc=com -w admin
 
 # Import the Active Directory LDAP certificate into presto-coordinator
-RUN keytool -import -alias presto -storepass changeit -keystore $JAVA_HOME/jre/lib/security/cacerts \
+RUN keytool -import -alias presto -storepass changeit -keystore $JAVA_HOME/lib/security/cacerts \
     -noprompt -trustcacerts -file /etc/openldap/certs/active-directory-certificate.crt
 
 # Import the Open LDAP certificate into presto-coordinator
-RUN keytool -import -alias prestowithopenldap -storepass changeit -keystore $JAVA_HOME/jre/lib/security/cacerts \
+RUN keytool -import -alias prestowithopenldap -storepass changeit -keystore $JAVA_HOME/lib/security/cacerts \
     -noprompt -trustcacerts -file /etc/openldap/certs/openldap-certificate.pem
 
 # Generate a keystore.
