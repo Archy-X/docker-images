@@ -10,37 +10,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM prestodb/centos-openjdk:10
+FROM prestodb/centos6-oj8:unlabelled
 MAINTAINER Presto community <https://prestodb.io/community.html>
 
 # Change default timezone
 RUN ln -snf "/usr/share/zoneinfo/Asia/Kathmandu" /etc/localtime && echo "Asia/Kathmandu" > /etc/timezone
 
-RUN dnf install -y wget
+# Install HDP repo
+RUN wget -nv http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.6.5.0/hdp.repo -P /etc/yum.repos.d
 
-# Install Hadoop
-RUN wget -nv https://dlcdn.apache.org/hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz -P /tmp/ \
-    && tar -xzf /tmp/hadoop-3.4.0.tar.gz -C /opt/ \
-    && mv /opt/hadoop-3.4.0 /opt/hadoop \
-    && rm /tmp/hadoop-3.4.0.tar.gz
+# Install Hadoop, Hive (w/ MySQL)
+RUN yum install -y \
+    hadoop-hdfs-namenode \
+    hadoop-hdfs-secondarynamenode \
+    hadoop-hdfs-datanode \
 
-# Install Hive
-RUN wget -nv https://dlcdn.apache.org/hive/hive-4.0.0/apache-hive-4.0.0-bin.tar.gz -P /tmp/ \
-    && tar -xzf /tmp/apache-hive-4.0.0-bin.tar.gz -C /opt/ \
-    && mv /opt/apache-hive-4.0.0-bin /opt/hive \
-    && rm /tmp/apache-hive-4.0.0-bin.tar.gz
+    hadoop-yarn-resourcemanager \
+    hadoop-yarn-nodemanager \
 
-ENV HADOOP_HOME=/opt/hadoop
-ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-ENV HIVE_HOME=/opt/hive
-ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$HIVE_HOME/bin
+    hive \
+    hive-metastore \
+    hive-server2 \
 
-# Install MySQL
-RUN wget -nv https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-j-8.4.0-1.el9.noarch.rpm -P /tmp/ \
-    && rpm -i /tmp/mysql-connector-j-8.4.0-1.el9.noarch.rpm
+    mysql-server mysql-connector-java \
 
 # Cleanup
-RUN dnf clean all && rm -rf /tmp/* /var/tmp/*
+  && yum -y clean all && rm -rf /tmp/* /var/tmp/* \
+  && ln -s /usr/share/java/mysql-connector-java.jar /usr/hdp/current/hive-metastore/lib/mysql-connector-java.jar
+
+# Delete original configuration
+RUN rm -r /etc/hadoop/conf/* \
+  && rm -r /etc/hive/conf/*
 
 # Copy configuration files
 COPY ./files /
