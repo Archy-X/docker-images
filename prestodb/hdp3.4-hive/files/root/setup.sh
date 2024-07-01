@@ -24,6 +24,9 @@ sleep 15
 mkdir -p /var/log/hive
 chown hdfs:hdfs /var/log/hive
 
+mkdir -p /var/log/hadoop-yarn
+chown hdfs:hdfs /var/log/hadoop-yarn
+
 # 6 stop hdfs
 
 # 7 setup metastore

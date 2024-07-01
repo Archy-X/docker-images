@@ -15,6 +15,7 @@ MAINTAINER Presto community <https://prestodb.io/community.html>
 
 RUN useradd -ms /bin/bash hdfs
 RUN useradd -ms /bin/bash hive
+RUN useradd -ms /bin/bash yarn
 
 # Change default timezone
 RUN ln -snf "/usr/share/zoneinfo/Asia/Kathmandu" /etc/localtime && echo "Asia/Kathmandu" > /etc/timezone
