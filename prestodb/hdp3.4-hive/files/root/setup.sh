@@ -24,13 +24,13 @@ su -c "hdfs namenode -format" hdfs
 # 7 setup metastore
 mysqld --initialize
 
+chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
+
 /usr/sbin/mysqld --user=mysql --socket=/var/lib/mysql/mysql.sock --skip-networking=0 --skip-grant-tables &
 sleep 10s
 
 cd /opt/hive/scripts/metastore/upgrade/mysql/
-echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;" | mysql
-echo "CREATE DATABASE metastore; USE metastore; SOURCE hive-schema-1.2.1000.mysql.sql;" | mysql
-/usr/bin/mysqladmin -u root password 'root'
+echo "CREATE DATABASE metastore; USE metastore; SOURCE hive-schema-1.2.0.mysql.sql;" | mysql
 
 pkill mysqld
 sleep 10s
