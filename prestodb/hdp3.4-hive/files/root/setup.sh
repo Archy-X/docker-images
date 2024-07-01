@@ -4,7 +4,10 @@ mkdir -p /opt/hadoop/logs
 chown hdfs:hdfs /opt/hadoop/logs
 
 # 2 start hdfs
-su -c "hdfs namenode -format" hdfs
+mkdir -p /var/log/hadoop-hdfs
+chown hdfs:hdfs /var/log/hadoop-hdfs
+su -c "hdfs namenode -format 2>&1 > /var/log/hadoop-hdfs/hadoop-hdfs-namenode.log" hdfs&
+sleep 15
 
 # 4 init basic hdfs directories
 
@@ -15,9 +18,9 @@ su -c "hdfs namenode -format" hdfs
 # su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir /tmp/hadoop-yarn/staging/history && /usr/bin/hadoop fs -chown mapred:mapred /tmp/hadoop-yarn/staging/history && /usr/bin/hadoop fs -chmod -R 1777 /tmp/hadoop-yarn/staging/history'
 
 # 5 init hive directories
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir /user/hive/warehouse'
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chmod 1777 /user/hive/warehouse'
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chown hive /user/hive/warehouse'
+su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir -p /user/hive/warehouse'
+su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chmod 1777 /user/hive/warehouse'
+su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chown hive /user/hive/warehouse'
 
 # 6 stop hdfs
 
