@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 mkdir -p /opt/hadoop/logs
-chown hdfs:hdfs /opt/hadoop/logs
+chmod 777 /opt/hadoop/logs
 
 # 2 start hdfs
 mkdir -p /var/log/hadoop-hdfs
