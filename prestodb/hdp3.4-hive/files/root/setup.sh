@@ -18,9 +18,11 @@ sleep 15
 # su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir /tmp/hadoop-yarn/staging/history && /usr/bin/hadoop fs -chown mapred:mapred /tmp/hadoop-yarn/staging/history && /usr/bin/hadoop fs -chmod -R 1777 /tmp/hadoop-yarn/staging/history'
 
 # 5 init hive directories
-su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir -p /user/hive/warehouse'
-su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chmod 1777 /user/hive/warehouse'
-su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chown hive /user/hive/warehouse'
+# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir -p /user/hive/warehouse'
+# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chmod 1777 /user/hive/warehouse'
+# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chown hive /user/hive/warehouse'
+mkdir -p /var/log/hive
+chown hdfs:hdfs /var/log/hive
 
 # 6 stop hdfs
 
