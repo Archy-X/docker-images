@@ -35,7 +35,10 @@ RUN wget -nv https://dlcdn.apache.org/hive/hive-4.0.0/apache-hive-4.0.0-bin.tar.
     && rm /tmp/apache-hive-4.0.0-bin.tar.gz
 
 ENV HADOOP_HOME=/opt/hadoop
-ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+ENV HADOOP_MAPRED_HOME=$HADOOP_HOME
+ENV HADOOP_COMMON_HOME=$HADOOP_HOME
+ENV HADOOP_HDFS_HOME=$HADOOP_HOME
+ENV HADOOP_CONF_DIR=/etc/hadoop/conf
 ENV HIVE_HOME=/opt/hive
 ENV PATH=$PATH:/usr/local/bin:$JAVA_HOME:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$HIVE_HOME/bin
 

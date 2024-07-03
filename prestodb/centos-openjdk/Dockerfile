@@ -19,4 +19,4 @@ RUN set -xeu && \
     dnf clean all && rm -rf /var/cache/dnf /tmp/* /var/tmp/*
 
 # Set JAVA_HOME environment variable
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk
+ENV JAVA_HOME /usr/lib/jvm/jre-11-openjdk
