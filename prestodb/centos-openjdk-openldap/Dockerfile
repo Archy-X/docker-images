@@ -10,7 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM localhost/centos-openjdk
+FROM localhost:5000/centos-openjdk:10
 MAINTAINER Presto community <https://prestodb.io/community.html>
 
 ARG JDK_PATH
