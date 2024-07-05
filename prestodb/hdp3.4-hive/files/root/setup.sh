@@ -12,31 +12,20 @@ su -c "echo 'N' | hdfs namenode -format" hdfs
 su -c "hdfs namenode  2>&1 > /var/log/hadoop-hdfs/hadoop-hdfs-namenode.log" hdfs&
 sleep 15
 
-# 4 init basic hdfs directories
-
-# 4.1 Create an hdfs home directory for the yarn user. For some reason, init-hdfs doesn't do so.
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir /user/yarn && /usr/bin/hadoop fs -chown yarn:yarn /user/yarn'
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chmod -R 1777 /tmp/hadoop-yarn'
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir /tmp/hadoop-yarn/staging && /usr/bin/hadoop fs -chown mapred:mapred /tmp/hadoop-yarn/staging && /usr/bin/hadoop fs -chmod -R 1777 /tmp/hadoop-yarn/staging'
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir /tmp/hadoop-yarn/staging/history && /usr/bin/hadoop fs -chown mapred:mapred /tmp/hadoop-yarn/staging/history && /usr/bin/hadoop fs -chmod -R 1777 /tmp/hadoop-yarn/staging/history'
-
-# 5 init hive directories
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -mkdir /user/hive/warehouse'
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chmod 1777 /user/hive/warehouse'
-# su -s /bin/bash hdfs -c '/opt/hadoop/bin/hadoop fs -chown hive /user/hive/warehouse'
-
+# 3 ensure hive loads mysql java connector to classpath
 cp /usr/share/java/mysql-connector-java.jar $HIVE_HOME/lib/
 
+# 4 copy hive-site.xml configuration to actual hive conf directory
 cp /etc/hive/conf/hive-site.xml /opt/hive/conf
 
+# 5 init log directories
 mkdir -p /var/log/hive
 chown hdfs:hdfs /var/log/hive
 
 mkdir -p /var/log/hadoop-yarn
 chown hdfs:hdfs /var/log/hadoop-yarn
-# 6 stop hdfs
 
-# 7 setup metastore
+# 6 setup metastore
 mysqld --initialize
 
 chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
